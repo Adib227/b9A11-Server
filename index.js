@@ -8,9 +8,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('doctor is running');
+  res.send('volunteer is running');
 });
 
 app.listen(port, () => {
-  console.log(`Car Doctor Server is running on port ${port}`);
+  console.log(`Volunteer Management Server is running on port ${port}`);
 });
