@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -38,12 +38,29 @@ async function run() {
 
     app.get('/adds', async (req, res) => {
       const result = await volunteerAdd.find().toArray();
+      res.send(result);
     });
 
-    app.post('/needs', async (req, res) => {
-      const newVolunteer = req.body;
-      console.log(newVolunteer);
-      const result = await volunteerAdd.insertOne(newVolunteer);
+    app.get('/needs/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await volunteerCollection.findOne(query);
+      console.log(result);
+      res.send(result);
+    });
+
+    app.post('/adds', async (req, res) => {
+      const newPost = req.body;
+      console.log(newPost);
+      const result = await volunteerAdd.insertOne(newPost);
+      res.send(result);
+    });
+
+    app.get('/adds/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await volunteerAdd.findOne(query);
+      console.log(result);
       res.send(result);
     });
 
