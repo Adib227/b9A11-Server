@@ -64,15 +64,39 @@ async function run() {
       res.send(result);
     });
 
-    // Connect the client to the server	(optional starting in v4.7)
+    app.put('/adds/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedPost = req.body;
+      const post = {
+        $set: {
+          thumbnail: updatedPost.thumbnail,
+          postTitle: updatedPost.postTitle,
+          description: updatedPost.description,
+          category: updatedPost.category,
+          location: updatedPost.location,
+          volunteerNeeded: updatedPost.volunteerNeeded,
+        },
+      };
+
+      const result = await volunteerAdd.updateOne(filter, post, options);
+      res.send(result);
+    });
+
+    app.delete('/adds/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await volunteerAdd.deleteOne(query);
+      res.send(result);
+    });
+
     // await client.connect();
-    // Send a ping to confirm a successful connection
     // await client.db('admin').command({ ping: 1 });
     console.log(
       'Pinged your deployment. You successfully connected to MongoDB!'
     );
   } finally {
-    // Ensures that the client will close when you finish/error
     // await client.close();
   }
 }
